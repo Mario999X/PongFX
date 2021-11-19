@@ -12,15 +12,10 @@ import javafx.scene.shape.Rectangle;
 
 public class Game extends BorderPane {
 
-    private Rectangle borderLeft;
-    private Rectangle borderRight;
-    private Rectangle borderUp;
-    private Rectangle borderDown;
-    private Rectangle palitroque1;
-    private Rectangle palitroque2;
+    private Rectangle borderLeft, borderRight, borderUp, borderDown,
+            palitroque1, palitroque2;
     private Circle ball;
     private GameController controller;
-
     private StackPane panelGame;
 
 
@@ -58,17 +53,21 @@ public class Game extends BorderPane {
         palitroque1.setFill(Color.WHITE);
         palitroque1.heightProperty().bind(borderLeft.heightProperty().divide(8));
         palitroque1.widthProperty().bind(borderLeft.widthProperty().divide(2));
+        palitroque1.translateXProperty().bind(panelGame.widthProperty());
 
+        palitroque1.heightProperty().bind(borderLeft.widthProperty().multiply(3.25));
+        palitroque1.widthProperty().bind(borderLeft.widthProperty().divide(1.75));
+
+        palitroque2.heightProperty().bind(borderLeft.widthProperty().multiply(3.25));
+        palitroque2.widthProperty().bind(borderLeft.widthProperty().divide(1.75));
+        
         palitroque2.setFill(Color.WHITE);
         palitroque2.heightProperty().bind(borderRight.heightProperty().divide(8));
         palitroque2.widthProperty().bind(borderRight.widthProperty().divide(2));
+        palitroque2.translateXProperty().bind(borderLeft.widthProperty().multiply(-1));
 
         ball.setFill(Color.WHITE);
         ball.radiusProperty().bind(borderLeft.widthProperty().divide(3));
-
-
-
-
 
 
 
@@ -84,10 +83,6 @@ public class Game extends BorderPane {
 
         this.setCenter(panelGame);
 
-
-    }
-
-    public void initGame(){
 
     }
 
