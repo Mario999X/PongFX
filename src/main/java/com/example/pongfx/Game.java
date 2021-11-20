@@ -31,9 +31,12 @@ public class Game extends BorderPane {
         this.panelGame =new StackPane();
         this.panelGame.setMinSize(0,0);
         this.panelGame.setBackground(new Background(new BackgroundFill(Color.BLACK,null,null)));
-        controller=new GameController(borderLeft,borderRight,borderUp,borderDown, palitroque1, palitroque2, ball, panelGame);
+        controller=new GameController(borderLeft,borderRight,borderUp,borderDown, palitroque1,
+                palitroque2, ball, panelGame);
 
         //Inicialice
+
+            // --- WALLS ---
         borderLeft.setFill(Color.TRANSPARENT);
         borderLeft.heightProperty().bind(panelGame.heightProperty());
         borderLeft.widthProperty().bind(panelGame.widthProperty().divide(20));
@@ -50,26 +53,19 @@ public class Game extends BorderPane {
         borderUp.heightProperty().bind(panelGame.heightProperty().divide(20));
         borderUp.widthProperty().bind(panelGame.widthProperty());
 
+            // --- OBJECTS ---
         palitroque1.setFill(Color.WHITE);
-        palitroque1.heightProperty().bind(borderLeft.heightProperty().divide(8));
-        palitroque1.widthProperty().bind(borderLeft.widthProperty().divide(2));
-        palitroque1.translateXProperty().bind(panelGame.widthProperty());
-
+        palitroque1.translateXProperty().bind(borderLeft.widthProperty());
         palitroque1.heightProperty().bind(borderLeft.widthProperty().multiply(3.25));
         palitroque1.widthProperty().bind(borderLeft.widthProperty().divide(1.75));
 
+        palitroque2.setFill(Color.WHITE);
+        palitroque2.translateXProperty().bind(borderRight.widthProperty().multiply(-1));
         palitroque2.heightProperty().bind(borderLeft.widthProperty().multiply(3.25));
         palitroque2.widthProperty().bind(borderLeft.widthProperty().divide(1.75));
-        
-        palitroque2.setFill(Color.WHITE);
-        palitroque2.heightProperty().bind(borderRight.heightProperty().divide(8));
-        palitroque2.widthProperty().bind(borderRight.widthProperty().divide(2));
-        palitroque2.translateXProperty().bind(borderLeft.widthProperty().multiply(-1));
 
         ball.setFill(Color.WHITE);
         ball.radiusProperty().bind(borderLeft.widthProperty().divide(3));
-
-
 
         //Sets and Adds
         panelGame.getChildren().addAll(borderLeft,borderRight, borderDown, borderUp, palitroque1, palitroque2, ball);
