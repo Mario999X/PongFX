@@ -12,11 +12,12 @@ import javafx.util.Duration;
 public class GameController {
     private Rectangle borderLeft, borderRight, borderUp, borderDown, palitroque1, palitroque2;
     private Circle ball;
-    private Double speedBallX, speedBallY, speedPalito1, speedPalito2;
+    private double movBallX, movBallY, movPalito1, movPalito2;
     private Timeline animation;
     private StackPane panelGame;
 
-    public GameController(Rectangle borderLeft, Rectangle borderRight, Rectangle borderUp, Rectangle borderDown, Rectangle palitroque1, Rectangle palitroque2, Circle ball, StackPane panelGame) {
+    public GameController(Rectangle borderLeft, Rectangle borderRight, Rectangle borderUp, Rectangle borderDown,
+                          Rectangle palitroque1, Rectangle palitroque2, Circle ball, StackPane panelGame) {
         this.borderLeft = borderLeft;
         this.borderRight = borderRight;
         this.borderUp = borderUp;
@@ -24,9 +25,10 @@ public class GameController {
         this.palitroque1 = palitroque1;
         this.palitroque2 = palitroque2;
         this.ball = ball;
-        this.speedBallX = 1.0;
-        this.speedBallY = 1.0;
+        this.movBallX = 1.5;
+        this.movBallY = 1.5;
         this.panelGame=panelGame;
+
         initGame();
         initControls();
     }
@@ -36,38 +38,43 @@ public class GameController {
             movePalitoLeft();
             movePalitoRight();
             ballMove();
+
             colisionBallVertical();
             colisionSides();
+            colisionPalitos();
+            colisionPalitosMuros();
         }));
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
-        colisionPalitos();
-        colisionPalitosMuros();
+
     }
 
-    private void ballMove(){
-        ball.setTranslateY(ball.getTranslateY()+ speedBallY);
-        ball.setTranslateX(ball.getTranslateX()+ speedBallX);
-    }
+    // ------ MOVIMIENTOS ------
 
     private void movePalitoLeft() {
         controls();
-        palitroque1.setTranslateY(palitroque1.getTranslateY()+ speedPalito1);
+        palitroque1.setTranslateY(palitroque1.getTranslateY()+ movPalito1);
     }
 
     private void movePalitoRight() {
         controls();
-        palitroque2.setTranslateY(palitroque2.getTranslateY()+ speedPalito2);
-
+        palitroque2.setTranslateY(palitroque2.getTranslateY() + movPalito2);
     }
+
+    private void ballMove(){
+        ball.setTranslateY(ball.getTranslateY()+ movBallY);
+        ball.setTranslateX(ball.getTranslateX()+ movBallX);
+    }
+
+    // ------ COLISIONES ------
 
     private void colisionPalitos(){
         if (ball.getBoundsInParent().intersects(palitroque1.getBoundsInParent())
         | ball.getBoundsInParent().intersects(palitroque2.getBoundsInParent())){
-            if (speedBallX<20 & speedBallX >-20){
-                speedBallX =- speedBallX *1.1;
+            if (movBallX <20 & movBallX >-20){
+                movBallX =-movBallX *1.1;
             }else{
-                speedBallX =- speedBallX;
+                movBallX =-movBallX;
             }
         }
     }
@@ -75,11 +82,11 @@ public class GameController {
     private void colisionPalitosMuros(){
         if (palitroque1.getBoundsInParent().intersects(borderUp.getBoundsInParent())
         | palitroque1.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
-            speedPalito1 = 0.0;
+            movPalito1 = 0;
         }
         if (palitroque2.getBoundsInParent().intersects(borderUp.getBoundsInParent())
                 | palitroque2.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
-            speedPalito2 = 0.0;
+            movPalito2 = 0;
         }
 
     }
@@ -91,15 +98,18 @@ public class GameController {
             ball.setTranslateY(0);
             palitroque1.setTranslateY(0);
             palitroque2.setTranslateY(0);
-            speedBallX=1.5;
+            movBallX =1.5;
+            movBallY = 1.5;
         }
     }
     private void colisionBallVertical(){
         if (ball.getBoundsInParent().intersects(borderUp.getBoundsInParent())
         | ball.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
-            speedBallY = -speedBallY*1.1;
+            movBallY = -movBallY *1.1;
         }
     }
+
+    // ------ CONTROLES ------
 
     private void initControls(){
         panelGame.setOnKeyPressed(e->animation.play());
@@ -110,25 +120,24 @@ public class GameController {
     private void controls(){
         panelGame.setOnKeyPressed(e ->{
         switch (e.getCode()){
-            case UP: speedPalito2 -=1;
-            break;
-            case W: speedPalito1 -=1;
-            break;
-            case DOWN: speedPalito2 +=1;
-            case S: speedPalito1 +=1;
-            break;
+            case W: movPalito1 -=4;
+                break;
+            case S: movPalito1 +=4;
+                break;
+            case UP: movPalito2 -=4;
+                break;
+            case DOWN: movPalito2 +=4;
+                break;
         }
         });
         panelGame.setOnKeyReleased(e ->{
             switch (e.getCode()){
-                case W: speedPalito1 =0.0;
-                break;
-                case S: speedPalito1 = 0.0;
-                break;
-                case UP: speedPalito2 = 0.0;
-                break;
-                case DOWN: speedPalito2 = 0.0;
-                break;
+                case W: movPalito1 =0.0;
+                case S: movPalito1 = 0.0;
+                    break;
+                case UP: movPalito2 = 0.0;
+                case DOWN: movPalito2 = 0.0;
+                    break;
             }
         });
     }
