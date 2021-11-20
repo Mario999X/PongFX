@@ -12,11 +12,12 @@ import javafx.util.Duration;
 public class GameController {
     private Rectangle borderLeft, borderRight, borderUp, borderDown, palitroque1, palitroque2;
     private Circle ball;
-    private Double speedX, speedY, speedPalito1Y, speedPalito2Y;
+    private double movBallX, movBallY, movPalito1, movPalito2;
     private Timeline animation;
     private StackPane panelGame;
 
-    public GameController(Rectangle borderLeft, Rectangle borderRight, Rectangle borderUp, Rectangle borderDown, Rectangle palitroque1, Rectangle palitroque2, Circle ball, StackPane panelGame) {
+    public GameController(Rectangle borderLeft, Rectangle borderRight, Rectangle borderUp, Rectangle borderDown,
+                          Rectangle palitroque1, Rectangle palitroque2, Circle ball, StackPane panelGame) {
         this.borderLeft = borderLeft;
         this.borderRight = borderRight;
         this.borderUp = borderUp;
@@ -24,71 +25,120 @@ public class GameController {
         this.palitroque1 = palitroque1;
         this.palitroque2 = palitroque2;
         this.ball = ball;
-        this.speedX = 1.0;
-        this.speedY = 1.0;
-        this.speedPalito1Y = 0.0;
-        this.speedPalito2Y = 0.0;
+        this.movBallX = 1.5;
+        this.movBallY = 1.5;
         this.panelGame=panelGame;
+
         initGame();
         initControls();
     }
 
     private void initGame() {
         animation = new Timeline(new KeyFrame(Duration.millis(17),t->{
-            moveTank1();
-            moveTank2();
+            movePalitoLeft();
+            movePalitoRight();
             ballMove();
+
+            colisionBallVertical();
+            colisionSides();
+            colisionPalitos();
+            colisionPalitosMuros();
         }));
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
-        detectarColision();
+
+    }
+
+    // ------ MOVIMIENTOS ------
+
+    private void movePalitoLeft() {
+        controls();
+        palitroque1.setTranslateY(palitroque1.getTranslateY()+ movPalito1);
+    }
+
+    private void movePalitoRight() {
+        controls();
+        palitroque2.setTranslateY(palitroque2.getTranslateY() + movPalito2);
     }
 
     private void ballMove(){
-        ball.setTranslateY(ball.getTranslateY()-1);
-        detectarColisionVertical();
+        ball.setTranslateY(ball.getTranslateY()+ movBallY);
+        ball.setTranslateX(ball.getTranslateX()+ movBallX);
     }
 
-    private void moveTank1() {
-        palitroque1.setTranslateY(palitroque1.getTranslateY()-1);
-    }
+    // ------ COLISIONES ------
 
-    private void moveTank2() {
-        palitroque2.setTranslateY(palitroque2.getTranslateY()+1);
-
-    }
-
-
-    private void detectarColision(){
-        if (ball.getBoundsInParent().intersects(borderLeft.getBoundsInParent())){
-            System.out.println("Colision");
+    private void colisionPalitos(){
+        if (ball.getBoundsInParent().intersects(palitroque1.getBoundsInParent())
+        | ball.getBoundsInParent().intersects(palitroque2.getBoundsInParent())){
+            if (movBallX <20 & movBallX >-20){
+                movBallX =-movBallX *1.1;
+            }else{
+                movBallX =-movBallX;
+            }
         }
     }
-    private void detectarColisionVertical(){
+
+    private void colisionPalitosMuros(){
+        if (palitroque1.getBoundsInParent().intersects(borderUp.getBoundsInParent())
+        | palitroque1.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
+            movPalito1 = 0;
+        }
+        if (palitroque2.getBoundsInParent().intersects(borderUp.getBoundsInParent())
+                | palitroque2.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
+            movPalito2 = 0;
+        }
+
+    }
+
+    private void colisionSides(){
+        if (ball.getBoundsInParent().intersects(borderRight.getBoundsInParent())
+        | ball.getBoundsInParent().intersects(borderLeft.getBoundsInParent())){
+            ball.setTranslateX(0);
+            ball.setTranslateY(0);
+            palitroque1.setTranslateY(0);
+            palitroque2.setTranslateY(0);
+            movBallX =1.5;
+            movBallY = 1.5;
+        }
+    }
+    private void colisionBallVertical(){
         if (ball.getBoundsInParent().intersects(borderUp.getBoundsInParent())
         | ball.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
-            speedY = -speedY*1.1;
+            movBallY = -movBallY *1.1;
         }
     }
+
+    // ------ CONTROLES ------
 
     private void initControls(){
         panelGame.setOnKeyPressed(e->animation.play());
         panelGame.setFocusTraversable(true);
-        controls();
 
     }
 
     private void controls(){
         panelGame.setOnKeyPressed(e ->{
         switch (e.getCode()){
-            case NUMPAD8: speedPalito2Y -=1;
-            break;
-            case W: speedPalito1Y -=1;
-            break;
-            case NUMPAD2: speedPalito2Y +=1;
-            case S: speedPalito1Y +=1;
-            break;
+            case W: movPalito1 -=4;
+                break;
+            case S: movPalito1 +=4;
+                break;
+            case UP: movPalito2 -=4;
+                break;
+            case DOWN: movPalito2 +=4;
+                break;
         }
+        });
+        panelGame.setOnKeyReleased(e ->{
+            switch (e.getCode()){
+                case W: movPalito1 =0.0;
+                case S: movPalito1 = 0.0;
+                    break;
+                case UP: movPalito2 = 0.0;
+                case DOWN: movPalito2 = 0.0;
+                    break;
+            }
         });
     }
 }
