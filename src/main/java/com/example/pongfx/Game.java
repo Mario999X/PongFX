@@ -1,12 +1,9 @@
 package com.example.pongfx;
 
 import javafx.geometry.Pos;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Label;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
@@ -17,7 +14,11 @@ public class Game extends BorderPane {
     private Circle ball;
     private GameController controller;
     private StackPane panelGame;
-    
+    private HBox panelTitle;
+    private HBox panelScore;
+    private Label labelOrgScore1, labelOrgScore2;
+
+    private String title;
 
     public Game(){
         //Instance
@@ -25,14 +26,18 @@ public class Game extends BorderPane {
         this.borderRight=new Rectangle();
         this.borderUp=new Rectangle();
         this.borderDown=new Rectangle();
+        this.title = "PONG_FX";
         this.palitroque1 =new Rectangle();
         this.palitroque2 = new Rectangle();
         this.ball = new Circle();
+        this.panelScore = new HBox();
         this.panelGame =new StackPane();
         this.panelGame.setMinSize(0,0);
         this.panelGame.setBackground(new Background(new BackgroundFill(Color.BLACK,null,null)));
         controller=new GameController(borderLeft,borderRight,borderUp,borderDown, palitroque1,
-                palitroque2, ball, panelGame);
+                palitroque2, ball, panelGame, panelScore);
+        this.labelOrgScore1 = new Label("Player 1: " + controller.getScore1() + "\t \t \t \t \t \t \t \t");
+        this.labelOrgScore2 = new Label("Player 2: " + controller.getScore2());
 
         //Inicialice
 
@@ -77,8 +82,11 @@ public class Game extends BorderPane {
         panelGame.setAlignment(palitroque2, Pos.CENTER_RIGHT);
         panelGame.setAlignment(ball, Pos.CENTER);
 
-        this.setCenter(panelGame);
+        panelScore.getChildren().addAll(labelOrgScore1, labelOrgScore2);
 
+
+        this.setCenter(panelGame);
+        this.setBottom(panelScore);
 
     }
 

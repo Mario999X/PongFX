@@ -4,6 +4,7 @@ package com.example.pongfx;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -15,9 +16,11 @@ public class GameController {
     private double movBallX, movBallY, movPalito1, movPalito2;
     private Timeline animation;
     private StackPane panelGame;
+    private HBox panelScore;
+    private int score1, score2;
 
     public GameController(Rectangle borderLeft, Rectangle borderRight, Rectangle borderUp, Rectangle borderDown,
-                          Rectangle palitroque1, Rectangle palitroque2, Circle ball, StackPane panelGame) {
+                          Rectangle palitroque1, Rectangle palitroque2, Circle ball, StackPane panelGame, HBox panelScore) {
         this.borderLeft = borderLeft;
         this.borderRight = borderRight;
         this.borderUp = borderUp;
@@ -27,7 +30,10 @@ public class GameController {
         this.ball = ball;
         this.movBallX = 3;
         this.movBallY = 3;
-        this.panelGame=panelGame;
+        this.panelGame= panelGame;
+        this.score1 = 0;
+        this.score2 = 0;
+        this.panelScore = panelScore;
 
         initGame();
         initControls();
@@ -97,16 +103,28 @@ public class GameController {
     }
 
     private void colisionSides(){
-        if (ball.getBoundsInParent().intersects(borderRight.getBoundsInParent())
-        | ball.getBoundsInParent().intersects(borderLeft.getBoundsInParent())){
+
+        if (ball.getBoundsInParent().intersects(borderRight.getBoundsInParent())){
             ball.setTranslateX(0);
             ball.setTranslateY(0);
             palitroque1.setTranslateY(0);
             palitroque2.setTranslateY(0);
             movBallX =3;
             movBallY = 3;
+            score1 = score1+1;
         }
+        if (ball.getBoundsInParent().intersects(borderLeft.getBoundsInParent())){
+            ball.setTranslateX(0);
+            ball.setTranslateY(0);
+            palitroque1.setTranslateY(0);
+            palitroque2.setTranslateY(0);
+            movBallX =3;
+            movBallY = 3;
+            score2 = score2+1;
+        }
+
     }
+
     private void colisionBallVertical(){
         if (ball.getBoundsInParent().intersects(borderUp.getBoundsInParent())
         | ball.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
@@ -150,5 +168,21 @@ public class GameController {
                     break;
             }
         });
+    }
+
+    public int getScore1() {
+        return score1;
+    }
+
+    public void setScore1(int score1) {
+        this.score1 = score1;
+    }
+
+    public int getScore2() {
+        return score2;
+    }
+
+    public void setScore2(int score2) {
+        this.score2 = score2;
     }
 }
