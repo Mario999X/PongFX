@@ -17,7 +17,7 @@ public class Game extends BorderPane {
     private Circle ball;
     private GameController controller;
     private StackPane panelGame;
-
+    
 
     public Game(){
         //Instance

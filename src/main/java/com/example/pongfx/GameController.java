@@ -25,8 +25,8 @@ public class GameController {
         this.palitroque1 = palitroque1;
         this.palitroque2 = palitroque2;
         this.ball = ball;
-        this.movBallX = 2.5;
-        this.movBallY = 2.5;
+        this.movBallX = 3;
+        this.movBallY = 3;
         this.panelGame=panelGame;
 
         initGame();
@@ -71,7 +71,7 @@ public class GameController {
     private void colisionPalitos(){
         if (ball.getBoundsInParent().intersects(palitroque1.getBoundsInParent())
         | ball.getBoundsInParent().intersects(palitroque2.getBoundsInParent())){
-            if (movBallX <20 & movBallX >-20){
+            if (movBallX <15 & movBallX >-15){
                 movBallX =-movBallX *1.1;
             }else{
                 movBallX =-movBallX;
@@ -103,14 +103,18 @@ public class GameController {
             ball.setTranslateY(0);
             palitroque1.setTranslateY(0);
             palitroque2.setTranslateY(0);
-            movBallX =1.5;
-            movBallY = 1.5;
+            movBallX =3;
+            movBallY = 3;
         }
     }
     private void colisionBallVertical(){
         if (ball.getBoundsInParent().intersects(borderUp.getBoundsInParent())
         | ball.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
-            movBallY = -movBallY *1.1;
+            if (movBallY <15 & movBallY >-15){
+                movBallY =-movBallY *1.1;
+            }else{
+                movBallY =-movBallY;
+            }
         }
     }
 
