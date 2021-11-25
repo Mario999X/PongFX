@@ -55,14 +55,14 @@ public class Game extends BorderPane {
 
             // --- OBJECTS ---
         palitroque1.setFill(Color.WHITE);
-        palitroque1.translateXProperty().bind(borderLeft.widthProperty());
-        palitroque1.heightProperty().bind(borderLeft.widthProperty().multiply(3.25));
-        palitroque1.widthProperty().bind(borderLeft.widthProperty().divide(1.75));
+        palitroque1.translateXProperty().bind(borderLeft.widthProperty().multiply(2.10));
+        palitroque1.heightProperty().bind(borderLeft.widthProperty().multiply(3.15));
+        palitroque1.widthProperty().bind(borderLeft.widthProperty().divide(1.85));
 
         palitroque2.setFill(Color.WHITE);
-        palitroque2.translateXProperty().bind(borderRight.widthProperty().multiply(-1));
-        palitroque2.heightProperty().bind(borderLeft.widthProperty().multiply(3.25));
-        palitroque2.widthProperty().bind(borderLeft.widthProperty().divide(1.75));
+        palitroque2.translateXProperty().bind(borderRight.widthProperty().multiply(-2.10));
+        palitroque2.heightProperty().bind(borderLeft.widthProperty().multiply(3.15));
+        palitroque2.widthProperty().bind(borderLeft.widthProperty().divide(1.85));
 
         ball.setFill(Color.WHITE);
         ball.radiusProperty().bind(borderLeft.widthProperty().divide(3));

@@ -25,8 +25,8 @@ public class GameController {
         this.palitroque1 = palitroque1;
         this.palitroque2 = palitroque2;
         this.ball = ball;
-        this.movBallX = 1.5;
-        this.movBallY = 1.5;
+        this.movBallX = 2.5;
+        this.movBallY = 2.5;
         this.panelGame=panelGame;
 
         initGame();
@@ -80,13 +80,18 @@ public class GameController {
     }
 
     private void colisionPalitosMuros(){
-        if (palitroque1.getBoundsInParent().intersects(borderUp.getBoundsInParent())
-        | palitroque1.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
-            movPalito1 = 0;
+
+        if (palitroque1.getBoundsInParent().intersects(borderUp.getBoundsInParent())){
+            palitroque1.setTranslateY(palitroque1.getTranslateY()+4.5);
         }
-        if (palitroque2.getBoundsInParent().intersects(borderUp.getBoundsInParent())
-                | palitroque2.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
-            movPalito2 = 0;
+        if (palitroque1.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
+            palitroque1.setTranslateY(palitroque1.getTranslateY()-4.5);
+        }
+        if (palitroque2.getBoundsInParent().intersects(borderUp.getBoundsInParent())){
+            palitroque2.setTranslateY(palitroque2.getTranslateY()+4.5);
+        }
+        if (palitroque2.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
+            palitroque2.setTranslateY(palitroque2.getTranslateY()-4.5);
         }
 
     }
@@ -120,16 +125,17 @@ public class GameController {
     private void controls(){
         panelGame.setOnKeyPressed(e ->{
         switch (e.getCode()){
-            case W: movPalito1 -=4;
+            case W: movPalito1 =-4.5;
                 break;
-            case S: movPalito1 +=4;
+            case S: movPalito1 =4.5;
                 break;
-            case UP: movPalito2 -=4;
+            case UP: movPalito2 =-4.5;
                 break;
-            case DOWN: movPalito2 +=4;
+            case DOWN: movPalito2 =4.5;
                 break;
         }
         });
+
         panelGame.setOnKeyReleased(e ->{
             switch (e.getCode()){
                 case W: movPalito1 =0.0;
