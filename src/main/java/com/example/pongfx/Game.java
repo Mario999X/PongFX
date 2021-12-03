@@ -10,7 +10,7 @@ import javafx.scene.shape.Rectangle;
 public class Game extends BorderPane {
 
     private Rectangle borderLeft, borderRight, borderUp, borderDown,
-            palitroque1, palitroque2;
+            bar1, bar2;
     private Circle ball;
     private GameController controller;
     private StackPane panelGame;
@@ -24,8 +24,8 @@ public class Game extends BorderPane {
         this.borderRight=new Rectangle();
         this.borderUp=new Rectangle();
         this.borderDown=new Rectangle();
-        this.palitroque1 =new Rectangle();
-        this.palitroque2 = new Rectangle();
+        this.bar1 =new Rectangle();
+        this.bar2 = new Rectangle();
         this.ball = new Circle();
         this.panelScore = new HBox();
         this.labelOrgScore1 = new Label("Player1: " + 0);
@@ -34,8 +34,8 @@ public class Game extends BorderPane {
         this.panelGame =new StackPane();
         this.panelGame.setMinSize(0,0);
         this.panelGame.setBackground(new Background(new BackgroundFill(Color.BLACK,null,null)));
-        controller=new GameController(borderLeft,borderRight,borderUp,borderDown, palitroque1,
-                palitroque2, ball, panelGame, panelScore, labelOrgScore1, labelOrgScore2);
+        controller=new GameController(borderLeft,borderRight,borderUp,borderDown, bar1,
+                bar2, ball, panelGame, panelScore, labelOrgScore1, labelOrgScore2);
 
         //Inicialice
 
@@ -57,27 +57,27 @@ public class Game extends BorderPane {
         borderUp.widthProperty().bind(panelGame.widthProperty());
 
             // --- OBJECTS ---
-        palitroque1.setFill(Color.WHITE);
-        palitroque1.translateXProperty().bind(borderLeft.widthProperty().multiply(2.10));
-        palitroque1.heightProperty().bind(borderLeft.widthProperty().multiply(3.15));
-        palitroque1.widthProperty().bind(borderLeft.widthProperty().divide(1.85));
+        bar1.setFill(Color.WHITE);
+        bar1.translateXProperty().bind(borderLeft.widthProperty().multiply(2.10));
+        bar1.heightProperty().bind(borderLeft.widthProperty().multiply(3.15));
+        bar1.widthProperty().bind(borderLeft.widthProperty().divide(1.85));
 
-        palitroque2.setFill(Color.WHITE);
-        palitroque2.translateXProperty().bind(borderRight.widthProperty().multiply(-2.10));
-        palitroque2.heightProperty().bind(borderLeft.widthProperty().multiply(3.15));
-        palitroque2.widthProperty().bind(borderLeft.widthProperty().divide(1.85));
+        bar2.setFill(Color.WHITE);
+        bar2.translateXProperty().bind(borderRight.widthProperty().multiply(-2.10));
+        bar2.heightProperty().bind(borderLeft.widthProperty().multiply(3.15));
+        bar2.widthProperty().bind(borderLeft.widthProperty().divide(1.85));
 
         ball.setFill(Color.WHITE);
         ball.radiusProperty().bind(borderLeft.widthProperty().divide(3));
 
         //Sets and Adds
-        panelGame.getChildren().addAll(borderLeft,borderRight, borderDown, borderUp, palitroque1, palitroque2, ball);
+        panelGame.getChildren().addAll(borderLeft,borderRight, borderDown, borderUp, bar1, bar2, ball);
         panelGame.setAlignment(borderLeft, Pos.CENTER_LEFT);
         panelGame.setAlignment(borderRight, Pos.CENTER_RIGHT);
         panelGame.setAlignment(borderDown, Pos.BOTTOM_CENTER);
         panelGame.setAlignment(borderUp, Pos.TOP_CENTER);
-        panelGame.setAlignment(palitroque1, Pos.CENTER_LEFT);
-        panelGame.setAlignment(palitroque2, Pos.CENTER_RIGHT);
+        panelGame.setAlignment(bar1, Pos.CENTER_LEFT);
+        panelGame.setAlignment(bar2, Pos.CENTER_RIGHT);
         panelGame.setAlignment(ball, Pos.CENTER);
 
         panelScore.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
