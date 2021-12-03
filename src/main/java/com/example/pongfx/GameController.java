@@ -4,6 +4,7 @@ package com.example.pongfx;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
@@ -18,9 +19,11 @@ public class GameController {
     private StackPane panelGame;
     private HBox panelScore;
     private int score1, score2;
+    private Label labelOrgScore1, labelOrgScore2;
 
     public GameController(Rectangle borderLeft, Rectangle borderRight, Rectangle borderUp, Rectangle borderDown,
-                          Rectangle palitroque1, Rectangle palitroque2, Circle ball, StackPane panelGame, HBox panelScore) {
+                          Rectangle palitroque1, Rectangle palitroque2, Circle ball, StackPane panelGame, HBox panelScore
+                          , Label labelOrgScore1, Label labelOrgScore2 ) {
         this.borderLeft = borderLeft;
         this.borderRight = borderRight;
         this.borderUp = borderUp;
@@ -34,6 +37,8 @@ public class GameController {
         this.score1 = 0;
         this.score2 = 0;
         this.panelScore = panelScore;
+        this.labelOrgScore1 = labelOrgScore1;
+        this.labelOrgScore2 = labelOrgScore2;
 
         initGame();
         initControls();
@@ -46,9 +51,9 @@ public class GameController {
             ballMove();
 
             colisionBallVertical();
-            colisionSides();
             colisionPalitos();
             colisionPalitosMuros();
+            puntoColision();
         }));
         animation.setCycleCount(Animation.INDEFINITE);
         animation.play();
@@ -102,27 +107,27 @@ public class GameController {
 
     }
 
-    private void colisionSides(){
-
-        if (ball.getBoundsInParent().intersects(borderRight.getBoundsInParent())){
-            ball.setTranslateX(0);
-            ball.setTranslateY(0);
-            palitroque1.setTranslateY(0);
-            palitroque2.setTranslateY(0);
-            movBallX =3;
-            movBallY = 3;
-            score1 = score1+1;
+    private void puntoColision(){
+        {
+            if (ball.getBoundsInParent().intersects(borderRight.getBoundsInParent())) {
+                resetElements();
+                if (score1 < 4) {
+                    score1++;
+                    labelOrgScore1.setText("Player1: " +score1);
+                } else {
+                    restartScores();
+                }
+            }
+            if (ball.getBoundsInParent().intersects(borderLeft.getBoundsInParent())) {
+                resetElements();
+                if (score2 < 4) {
+                    score2++;
+                    labelOrgScore2.setText("Player2: " + score2);
+                } else {
+                    restartScores();
+                }
+            }
         }
-        if (ball.getBoundsInParent().intersects(borderLeft.getBoundsInParent())){
-            ball.setTranslateX(0);
-            ball.setTranslateY(0);
-            palitroque1.setTranslateY(0);
-            palitroque2.setTranslateY(0);
-            movBallX =3;
-            movBallY = 3;
-            score2 = score2+1;
-        }
-
     }
 
     private void colisionBallVertical(){
@@ -169,20 +174,21 @@ public class GameController {
             }
         });
     }
-
-    public int getScore1() {
-        return score1;
+    private void restartScores() {
+        score1 = 0;
+        score2 = 0;
+        labelOrgScore1.setText("Player1: " + score1);
+        labelOrgScore2.setText("Player2: " + score2);
     }
 
-    public void setScore1(int score1) {
-        this.score1 = score1;
-    }
-
-    public int getScore2() {
-        return score2;
-    }
-
-    public void setScore2(int score2) {
-        this.score2 = score2;
+    private void resetElements(){
+        ball.setTranslateX(0);
+        ball.setTranslateY(0);
+        palitroque1.setTranslateY(0);
+        palitroque2.setTranslateY(0);
+        ball.setTranslateX(0);
+        ball.setTranslateY(0);
+        movBallX = 3;
+        movBallY = 3;
     }
 }
