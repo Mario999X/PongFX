@@ -12,7 +12,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 public class GameController {
-    private Rectangle borderLeft, borderRight, borderUp, borderDown, palitroque1, palitroque2;
+    private Rectangle borderLeft, borderRight, borderUp, borderDown, bar1, bar2;
     private Circle ball;
     private double movBallX, movBallY, movPalito1, movPalito2;
     private Timeline animation;
@@ -22,14 +22,14 @@ public class GameController {
     private Label labelOrgScore1, labelOrgScore2;
 
     public GameController(Rectangle borderLeft, Rectangle borderRight, Rectangle borderUp, Rectangle borderDown,
-                          Rectangle palitroque1, Rectangle palitroque2, Circle ball, StackPane panelGame, HBox panelScore
+                          Rectangle bar1, Rectangle bar2, Circle ball, StackPane panelGame, HBox panelScore
                           , Label labelOrgScore1, Label labelOrgScore2 ) {
         this.borderLeft = borderLeft;
         this.borderRight = borderRight;
         this.borderUp = borderUp;
         this.borderDown = borderDown;
-        this.palitroque1 = palitroque1;
-        this.palitroque2 = palitroque2;
+        this.bar1 = bar1;
+        this.bar2 = bar2;
         this.ball = ball;
         this.movBallX = 3;
         this.movBallY = 3;
@@ -46,30 +46,29 @@ public class GameController {
 
     private void initGame() {
         animation = new Timeline(new KeyFrame(Duration.millis(17),t->{
-            movePalitoLeft();
-            movePalitoRight();
+            moveBarLeft();
+            moveBarRight();
             ballMove();
 
-            colisionBallVertical();
-            colisionPalitos();
-            colisionPalitosMuros();
-            puntoColision();
+            colissionBallVertical();
+            colissionBars();
+            colissionBarsWalls();
+            winColission();
         }));
         animation.setCycleCount(Animation.INDEFINITE);
-        animation.play();
 
     }
 
     // ------ MOVIMIENTOS ------
 
-    private void movePalitoLeft() {
+    private void moveBarLeft() {
         controls();
-        palitroque1.setTranslateY(palitroque1.getTranslateY()+ movPalito1);
+        bar1.setTranslateY(bar1.getTranslateY()+ movPalito1);
     }
 
-    private void movePalitoRight() {
+    private void moveBarRight() {
         controls();
-        palitroque2.setTranslateY(palitroque2.getTranslateY() + movPalito2);
+        bar2.setTranslateY(bar2.getTranslateY() + movPalito2);
     }
 
     private void ballMove(){
@@ -79,9 +78,9 @@ public class GameController {
 
     // ------ COLISIONES ------
 
-    private void colisionPalitos(){
-        if (ball.getBoundsInParent().intersects(palitroque1.getBoundsInParent())
-        | ball.getBoundsInParent().intersects(palitroque2.getBoundsInParent())){
+    private void colissionBars(){
+        if (ball.getBoundsInParent().intersects(bar1.getBoundsInParent())
+        | ball.getBoundsInParent().intersects(bar2.getBoundsInParent())){
             if (movBallX <15 & movBallX >-15){
                 movBallX =-movBallX *1.1;
             }else{
@@ -90,24 +89,24 @@ public class GameController {
         }
     }
 
-    private void colisionPalitosMuros(){
+    private void colissionBarsWalls(){
 
-        if (palitroque1.getBoundsInParent().intersects(borderUp.getBoundsInParent())){
-            palitroque1.setTranslateY(palitroque1.getTranslateY()+4.5);
+        if (bar1.getBoundsInParent().intersects(borderUp.getBoundsInParent())){
+            bar1.setTranslateY(bar1.getTranslateY()+4.5);
         }
-        if (palitroque1.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
-            palitroque1.setTranslateY(palitroque1.getTranslateY()-4.5);
+        if (bar1.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
+            bar1.setTranslateY(bar1.getTranslateY()-4.5);
         }
-        if (palitroque2.getBoundsInParent().intersects(borderUp.getBoundsInParent())){
-            palitroque2.setTranslateY(palitroque2.getTranslateY()+4.5);
+        if (bar2.getBoundsInParent().intersects(borderUp.getBoundsInParent())){
+            bar2.setTranslateY(bar2.getTranslateY()+4.5);
         }
-        if (palitroque2.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
-            palitroque2.setTranslateY(palitroque2.getTranslateY()-4.5);
+        if (bar2.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
+            bar2.setTranslateY(bar2.getTranslateY()-4.5);
         }
 
     }
 
-    private void puntoColision(){
+    private void winColission(){
         {
             if (ball.getBoundsInParent().intersects(borderRight.getBoundsInParent())) {
                 resetElements();
@@ -130,7 +129,7 @@ public class GameController {
         }
     }
 
-    private void colisionBallVertical(){
+    private void colissionBallVertical(){
         if (ball.getBoundsInParent().intersects(borderUp.getBoundsInParent())
         | ball.getBoundsInParent().intersects(borderDown.getBoundsInParent())){
             if (movBallY <15 & movBallY >-15){
@@ -184,8 +183,8 @@ public class GameController {
     private void resetElements(){
         ball.setTranslateX(0);
         ball.setTranslateY(0);
-        palitroque1.setTranslateY(0);
-        palitroque2.setTranslateY(0);
+        bar1.setTranslateY(0);
+        bar2.setTranslateY(0);
         ball.setTranslateX(0);
         ball.setTranslateY(0);
         movBallX = 3;
